@@ -1,0 +1,53 @@
+{# templates/role/UtilisateurRole.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Rôles disponibles{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <h1>Rôles disponibles</h1>
+
+    <input type="text" id="searchRole" class="form-control mb-3" placeholder="Rechercher un rôle...">
+
+    <ul id="roleList" class="list-group">
+        {% for role in roles %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>{{ role.role }}</strong><br>
+                    <small>{{ role.description }}</small>
+                </div>
+                <a href="{{ path('demande_role', { id: role.id }) }}" class="btn btn-primary btn-sm">Demander ce rôle</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ path('UtilisateurRoleDemande') }}" class="btn btn-link mt-3">Voir mes demandes</a>
+
+    <hr>
+    <h2>Rôles approuvés</h2>
+    {% if approvedRoles is not empty %}
+        <ul class="list-group">
+            {% for role in approvedRoles %}
+                <li class="list-group-item">
+                    <strong>{{ role.role }}</strong><br>
+                    <small>{{ role.description }}</small>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucun rôle approuvé pour l’instant.</p>
+    {% endif %}
+</div>
+
+<script>
+   document.getElementById('searchRole').addEventListener('input', function() {
+    const filter = this.value.toLowerCase();
+    const roles = document.querySelectorAll('#roleList li');
+    roles.forEach(role => {
+        const roleName = role.querySelector('small').textContent.toLowerCase();
+        role.style.display = roleName.includes(filter) ? '' : 'none';
+    });
+});
+
+</script>
+{% endblock %}

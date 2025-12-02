@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+{% block title %}Fil d’actualité{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h2 class="mb-4 text-primary">📰 Fil d’actualité</h2>
+
+    <div class="row">
+        <div class="col-md-4">
+            <h4>🧩 Nouvelles applications</h4>
+            {% for app in apps %}
+                <div class="card shadow-sm mb-3 p-3 border-start border-primary border-3">
+                    <strong>{{ app.nomAppli }}</strong><br>
+                    <small>{{ app.description }}</small><br>
+                    <a href="{{ app.URL }}" target="_blank" class="small text-muted">{{ app.URL }}</a>
+                </div>
+            {% else %}
+                <p class="text-muted">Aucune nouvelle application.</p>
+            {% endfor %}
+        </div>
+
+        <div class="col-md-4">
+            <h4>🧱 Nouveaux rôles</h4>
+            {% for role in roles %}
+                <div class="card shadow-sm mb-3 p-3 border-start border-success border-3">
+                    <strong>{{ role.role }}</strong><br>
+                    <small>{{ role.description }}</small>
+                </div>
+            {% else %}
+                <p class="text-muted">Aucun rôle récent.</p>
+            {% endfor %}
+        </div>
+
+        <div class="col-md-4">
+            <h4>📬 Dernières demandes</h4>
+            {% for demande in demandes %}
+                <div class="card shadow-sm mb-3 p-3 border-start border-warning border-3">
+                    <strong>{{ demande.user.nom }}</strong> a demandé <em>{{ demande.role.role }}</em>.<br>
+                    <small>Statut : {{ demande.status }}</small>
+                </div>
+            {% else %}
+                <p class="text-muted">Aucune demande récente.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

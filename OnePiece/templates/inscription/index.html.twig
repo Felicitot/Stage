@@ -1,0 +1,233 @@
+{% block stylesheets %}
+    <!-- Bootstrap 5 & Fonts & Animate.css -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #ffffff;
+        }
+
+        .register-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .register-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 1100px;
+            width: 100%;
+            display: flex;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .register-left, .register-right {
+            padding: 3rem 2rem;
+            flex: 1;
+        }
+
+        .register-left {
+            background-color: #fff;
+        }
+
+        .register-right {
+            background-color: #f8f9fa;
+            border-left: 3px solid #d4af37;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 29rem;
+            text-align: center;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #004aad, #004aad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            font-size: 28px;
+        }
+
+        .form-control {
+            border-radius: 30px;
+        }
+
+        .btn-purple {
+            background-color: #004aad;
+            border: none;
+            color: white;
+            border-radius: 30px;
+            padding: 10px 25px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-purple:hover {
+            background-color: #004aad;
+        }
+
+        .btn-outline-purple {
+            color:#004aad;
+            border: 2px solid #004aad;
+            border-radius: 30px;
+            padding: 10px 25px;
+            transition: 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn-outline-purple:hover {
+            background-color: #004aad;
+            color: #fff;
+        }
+
+        .flash-message {
+            animation: fadeInDown 0.5s ease-in-out;
+        }
+
+        @media (max-width: 768px) {
+            .register-card {
+                flex-direction: column;
+            }
+
+            .register-right {
+                border-left: none;
+                border-top: 3px solid #d4af37;
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<section class="register-section">
+   <!-- 🧾 Modale de consentement -->
+<div class="modal fade" id="consentementModal" tabindex="-1" aria-labelledby="consentementModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-warning text-dark">
+        <h5 class="modal-title" id="consentementModalLabel">Consentement et responsabilité</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+      <div class="modal-body">
+        <p>
+          En poursuivant votre inscription, vous confirmez que <strong>toutes les informations fournies sont exactes</strong> et vérifiables.
+        </p>
+        <p>
+          Vous acceptez que ces informations soient <strong>utilisées par l'administration</strong> pour des vérifications et dans le cadre des services fournis.
+        </p>
+        <p>
+          <strong>Tout renseignement falsifié</strong> ou mensonger pourrait entraîner des <strong>sanctions administratives ou juridiques.</strong>
+        </p>
+        <p>
+          En cliquant sur "J'accepte", vous reconnaissez avoir lu et compris ces conditions.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-purple" id="acceptConsent">J'accepte</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="register-card">
+        <!-- Left Side: Registration Form -->
+        <div class="register-left">
+            <h2 class="text-center gradient-text mb-4">Créer un compte</h2>
+
+            {# ✅ Flash Message après inscription #}
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success text-center flash-message">
+                    <i class="fas fa-check-circle me-2"></i>{{ message }}
+                </div>
+            {% endfor %}
+
+            {{ form_start(InscriptionForm, {'attr': {'class': 'animate__animated animate__fadeInUp'}}) }}
+
+                <div class="mb-3">
+                   </div>
+
+                {{ form_row(InscriptionForm.PieceId) }}
+                {{ form_row(InscriptionForm.FaitLe) }}
+                {{ form_row(InscriptionForm.FaitA) }}
+                {{ form_row(InscriptionForm.Dupli) }}
+                {{ form_row(InscriptionForm.DateDupli) }}
+                {{ form_row(InscriptionForm.LieuDupli) }}
+                {{ form_row(InscriptionForm.Recto) }} 
+                {{ form_row(InscriptionForm.Verso) }}
+                {{ form_row(InscriptionForm.Nationalite) }}
+
+                <hr class="my-4">
+
+                <h5 class="text-purple fw-bold mb-3">Informations personnelles</h5>
+                {{ form_row(InscriptionForm.civilite) }}
+                {{ form_row(InscriptionForm.Nom) }}
+                {{ form_row(InscriptionForm.Prenoms) }}
+                {{ form_row(InscriptionForm.DateNaissance) }}
+                {{ form_row(InscriptionForm.Domicile) }}
+                {{ form_row(InscriptionForm.NumTel) }}
+                {{ form_row(InscriptionForm.Email) }}
+                {{ form_row(InscriptionForm.Ville) }}
+                {{ form_row(InscriptionForm.District) }}
+                {{ form_row(InscriptionForm.Region) }}
+                {{ form_row(InscriptionForm.commune) }}
+                 {{ form_row(InscriptionForm.photo) }}
+                {{ form_row(InscriptionForm.plainPassword.first) }}
+                {{ form_row(InscriptionForm.plainPassword.second) }}
+
+                <div class="my-3 text-center">
+                   <div class="g-recaptcha mb-3" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div>
+                </div>
+
+                <div class="d-grid mt-4">
+                    <button type="button" class="btn btn-purple" id="openConsentModal">S'inscrire</button>
+                </div>
+
+            {{ form_end(InscriptionForm) }}
+            <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        </div>
+
+        <!-- Right Side: Welcome -->
+        <div class="register-right">
+            <h3 class="gradient-text mb-3">Bonjour !</h3>
+            <p class="mb-4">Vous avez déjà un compte ? Connectez-vous ici</p>
+            <a href="{{ path('app_connexion') }}" class="btn btn-outline-purple">Se connecter</a>
+        </div>
+    </div>
+</section>
+{% block javascripts %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const openBtn = document.getElementById('openConsentModal');
+        const acceptBtn = document.getElementById('acceptConsent');
+        const consentModalEl = document.getElementById('consentementModal');
+        const consentModal = new bootstrap.Modal(consentModalEl);
+        const form = document.querySelector('form');
+
+        // Affiche la modale au clic sur "S'inscrire"
+        openBtn.addEventListener('click', function () {
+            consentModal.show();
+        });
+
+        // Soumet le formulaire quand l'utilisateur clique sur "J'accepte"
+        acceptBtn.addEventListener('click', function () {
+            consentModal.hide();
+            form.submit();
+        });
+    });
+</script>
+
+{% endblock %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

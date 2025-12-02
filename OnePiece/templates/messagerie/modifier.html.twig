@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier le message{% endblock %}
+
+{% block body %}
+    <h2>Modifier le message</h2>
+
+    {{ form_start(form) }}
+        {{ form_row(form.contexte) }}
+        <button class="btn btn-primary">💾 Enregistrer</button>
+    {{ form_end(form) }}
+{% endblock %}

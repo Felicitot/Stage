@@ -1,0 +1,170 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes demandes de rôles{% endblock %}
+
+{% block stylesheets %}
+<style>
+  table {
+    animation: fadeSlideIn 0.7s ease forwards;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+.navbar-gradient {
+        background: linear-gradient(90deg, #0c0d0eff, #004aad);
+        color: white;
+}
+ @keyframes gradientShift {
+      0%{background-position:0% 50%;}
+      50%{background-position:100% 50%;}
+      100%{background-position:0% 50%;}
+    }
+
+    /* Animation navbar apparition */
+    nav.navbar {
+      transform: translateY(-100%);
+      opacity: 0;
+      animation: slideFadeIn 0.7s forwards;
+    }
+    @keyframes slideFadeIn {
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    /* Nav link style */
+    .navbar-nav .nav-link {
+      position: relative;
+      transition: color 0.3s ease;
+      font-weight: 500;
+      color: #e0e0e0; /* Couleur neutre clair pour liens inactifs */
+    }
+
+    /* Liens actifs et hover en bleu bootstrap */
+    .navbar-nav .nav-link.active,
+    .navbar-nav .nav-link:hover,
+    .navbar-nav .nav-link:focus {
+      color: #0d6efd !important;
+    }
+
+    /* Underline effect in blue */
+    .navbar-nav .nav-link::after {
+      content: "";
+      position: absolute;
+      width: 0%;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: #0d6efd;
+      transition: width 0.3s ease;
+      border-radius: 1px;
+    }
+    .navbar-nav .nav-link:hover::after,
+    .navbar-nav .nav-link.active::after {
+      width: 100%;
+    }
+
+    /* Dropdown fade */
+    .dropdown-menu {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      pointer-events: none;
+    }
+    .dropdown.show .dropdown-menu {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    /* Brand style */
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.8rem;
+      letter-spacing: 1.2px;
+      color: #fff !important;
+      text-shadow: 0 0 5px rgba(0,0,0,0.3);
+      transition: color 0.3s ease;
+    }
+    .navbar-brand:hover {
+      color: #0d6efd !important; /* bleu au hover aussi */
+    }
+
+    /* Toggler icon animation */
+    .navbar-toggler {
+      border: none;
+      outline: none;
+      transition: transform 0.3s ease;
+    }
+    .navbar-toggler:focus {
+      box-shadow: none;
+    }
+    .navbar-toggler.collapsed:hover {
+      transform: rotate(90deg);
+    }
+
+    /* Adjust dropdown caret icon */
+    .nav-link.dropdown-toggle::after {
+      margin-left: 5px;
+      transition: transform 0.3s ease;
+      border-top: 0.3em solid;
+      border-right: 0.3em solid transparent;
+      border-left: 0.3em solid transparent;
+      content: "";
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .nav-item.show > .nav-link.dropdown-toggle::after {
+      transform: rotate(180deg);
+    }
+  @keyframes fadeSlideIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <h2>Mes demandes de rôles</h2>
+
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr><th>Rôle</th><th>Date</th><th>Statut</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+        {% for req in requests %}
+            <tr>
+                <td>{{ req.role.role }}</td>
+                <td>{{ req.dateDemande|date('d/m/Y H:i') }}</td>
+                <td>
+                    {% if req.status == 'attente' %}
+                        <span class="badge bg-warning text-dark">En attente</span>
+                    {% elseif req.status == 'approuvee' %}
+                        <span class="badge bg-success">Approuvée</span>
+                    {% else %}
+                        <span class="badge bg-danger">Rejetée</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if req.status == 'attente' %}
+                        <form method="post" action="{{ path('annuler_demande', { id: req.id }) }}" onsubmit="return confirm('Annuler cette demande ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('cancel' ~ req.id) }}">
+                            <button class="btn btn-sm btn-outline-danger">Annuler</button>
+                        </form>
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="4" class="text-center">Aucune demande effectuée.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('UtilisateurRole') }}" class="btn btn-secondary mt-3">← Retour aux rôles disponibles</a>
+</div>
+{% endblock %}

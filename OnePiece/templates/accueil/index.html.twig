@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Trésor Malagasy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #ffffff;
+            color: #000;
+            overflow-x: hidden;
+        }
+
+        .hero {
+            background: linear-gradient(135deg,#0c0d0eff,  #004aad);
+            color: white;
+            text-align: center;
+            padding: 100px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .hero p.slogan {
+            font-size: 1.3rem;
+            font-style: italic;
+            color: #fffbe6;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .content {
+            padding: 60px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .content h2 {
+            color: #004aad;
+            margin-bottom: 20px;
+            animation: fadeIn 1.5s ease-in;
+        }
+
+        .activities {
+            list-style: none;
+            padding: 0;
+            margin: 30px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .activities li {
+            background-color: #f8f8f8;
+            border: 2px solid #004aad;
+            padding: 20px;
+            width: 250px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            animation: fadeInUp 2s ease;
+        }
+
+        .activities li:hover {
+            transform: scale(1.05);
+        }
+
+        .buttons {
+            margin-top: 40px;
+        }
+
+        .buttons a {
+            text-decoration: none;
+            background-color: #004aad;
+            color: white;
+            padding: 12px 25px;
+            margin: 10px;
+            border-radius: 30px;
+            transition: background-color 0.3s ease;
+            font-weight: bold;
+        }
+
+        .buttons a:hover {
+            background-color: #004aad;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            background-color:white;
+            color: #000;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+         <img 
+                src="{{ asset('uploads/profile_photos/tresor.png') }}" 
+                width="120" height="120" 
+                style="border-radius: 50%; object-fit: cover;">
+        <h1>
+           TRESOR MALAGASY</h1>
+        <p class="slogan">"VOLA TSARA KAJY, MAHATSARA FIHAVANANA"</p>
+    </section>
+
+    <section class="content">
+        <h2>Bienvenue sur notre plateforme</h2>
+        <p>Découvrez les services offerts par le Trésor Public de Madagascar :</p>
+
+        <ul class="activities">
+            <li>Gestion des finances publiques</li>
+            <li>Paiement des fonctionnaires</li>
+            <li>Suivi des recettes fiscales</li>
+            <li>Consultation des documents comptables</li>
+            <li>Demandes et déclarations en ligne</li>
+        </ul>
+
+        <div class="buttons">
+            <a href="{{ path('app_inscription') }}">S'inscrire</a>
+            <a href="{{ path('app_connexion') }}">Se connecter</a>
+        </div>
+    </section>
+
+    <footer>
+        &copy; {{ "now"|date("Y") }} Trésor Malagasy - Tous droits réservés.
+    </footer>
+
+</body>
+</html>

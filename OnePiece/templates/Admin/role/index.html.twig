@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des rôles{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="fw-bold text-primary">⚙️ Gestion des rôles</h1>
+        <a href="{{ path('admin_roles_creation') }}" class="btn btn-success">
+            ➕ Ajouter un rôle
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <table class="table table-hover align-middle">
+                <thead class="table-primary">
+                    <tr class="text-center">
+                        <th style="width: 5%;">#</th>
+                        <th style="width: 20%;">Nom</th>
+                        <th style="width: 45%;">Description</th>
+                        <th style="width: 30%;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for role in roles %}
+                        <tr>
+                            <td class="text-center">{{ role.id }}</td>
+                            <td class="fw-semibold">{{ role.role }}</td>
+                            <td>{{ role.description }}</td>
+                            <td class="text-center">
+                                <a href="{{ path('admin_roles_edit', { id: role.id }) }}" class="btn btn-warning btn-sm me-2">
+                                    ✏️ Modifier
+                                </a>
+
+                                <form method="post" 
+                                      action="{{ path('admin_roles_delete', {id: role.id}) }}" 
+                                      class="d-inline"
+                                      onsubmit="return confirm('Voulez-vous vraiment supprimer ce rôle ?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ role.id) }}">
+                                    <button class="btn btn-danger btn-sm">🗑️ Supprimer</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center text-muted py-3">
+                                Aucun rôle enregistré pour le moment.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="mt-4 text-center">
+        <a href="{{ path('admin_role_demandee') }}" class="btn btn-outline-primary">
+            ← Voir la liste des demandes de rôles
+        </a>
+    </div>
+</div>
+{% endblock %}

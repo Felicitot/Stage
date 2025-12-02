@@ -1,0 +1,286 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Compte{% endblock %}
+
+{% block stylesheets %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        .navbar-gradient {
+          background: linear-gradient(90deg, #0c0d0eff, #004aad);
+          color: white;
+        }
+         @keyframes gradientShift {
+      0%{background-position:0% 50%;}
+      50%{background-position:100% 50%;}
+      100%{background-position:0% 50%;}
+    }
+
+    /* Animation navbar apparition */
+    nav.navbar {
+      transform: translateY(-100%);
+      opacity: 0;
+      animation: slideFadeIn 0.7s forwards;
+    }
+    @keyframes slideFadeIn {
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    /* Nav link style */
+    .navbar-nav .nav-link {
+      position: relative;
+      transition: color 0.3s ease;
+      font-weight: 500;
+      color: #e0e0e0; /* Couleur neutre clair pour liens inactifs */
+    }
+
+    /* Liens actifs et hover en bleu bootstrap */
+    .navbar-nav .nav-link.active,
+    .navbar-nav .nav-link:hover,
+    .navbar-nav .nav-link:focus {
+      color: #0d6efd !important;
+    }
+
+    /* Underline effect in blue */
+    .navbar-nav .nav-link::after {
+      content: "";
+      position: absolute;
+      width: 0%;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: #0d6efd;
+      transition: width 0.3s ease;
+      border-radius: 1px;
+    }
+    .navbar-nav .nav-link:hover::after,
+    .navbar-nav .nav-link.active::after {
+      width: 100%;
+    }
+
+    /* Dropdown fade */
+    .dropdown-menu {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      pointer-events: none;
+    }
+    .dropdown.show .dropdown-menu {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    /* Brand style */
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.8rem;
+      letter-spacing: 1.2px;
+      color: #fff !important;
+      text-shadow: 0 0 5px rgba(0,0,0,0.3);
+      transition: color 0.3s ease;
+    }
+    .navbar-brand:hover {
+      color: #0d6efd !important; /* bleu au hover aussi */
+    }
+
+    /* Toggler icon animation */
+    .navbar-toggler {
+      border: none;
+      outline: none;
+      transition: transform 0.3s ease;
+    }
+    .navbar-toggler:focus {
+      box-shadow: none;
+    }
+    .navbar-toggler.collapsed:hover {
+      transform: rotate(90deg);
+    }
+
+    /* Adjust dropdown caret icon */
+    .nav-link.dropdown-toggle::after {
+      margin-left: 5px;
+      transition: transform 0.3s ease;
+      border-top: 0.3em solid;
+      border-right: 0.3em solid transparent;
+      border-left: 0.3em solid transparent;
+      content: "";
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .nav-item.show > .nav-link.dropdown-toggle::after {
+      transform: rotate(180deg);
+    }
+        .navbar-brand {
+            font-weight: bold;
+        }
+
+        .card-title {
+            color: #004aad;
+            font-weight: 600;
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+        }
+
+        .list-group-item strong {
+            color: #343a40;
+        }
+
+        .card-footer {
+            background-color: #fff;
+            border-top: none;
+        }
+
+        .nav-link {
+            color: #fff !important;
+            transition: 0.3s ease;
+        }
+
+        .nav-link:hover {
+            text-decoration: underline;
+        }
+
+        .navbar .dropdown-toggle::after {
+            display: none;
+        }
+
+        .icon-text i {
+            margin-right: 8px;
+            color: #004aad;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            color: #333;
+            font-weight: 600;
+            margin-top: 2rem;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+
+<div class="container py-5">
+    <h2 class="text-center mb-5 text-dark">{# exemple : afficher la photo de profil #}
+{% if app.user.photo %}
+    <img src="{{ asset('uploads/profile_photos/' ~ app.user.photo) }}" alt="Photo de profil" class="rounded-circle" width="150">
+{% else %}
+    {# icône par défaut si pas de photo #}
+    <i class="bi bi-person-circle" style="font-size: 3rem;"></i>
+{% endif %}
+Bienvenue sur votre espace, <span class="text-purple fw-bold">{{ app.user.Prenoms }}</span> !</h2>
+
+    <div class="card shadow mb-5">
+        <div class="card-body">
+            <h4 class="card-title"><i class="bi bi-person-lines-fill me-2 text-warning"></i>Informations personnelles</h4>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><i class="bi bi-person-fill icon-text"></i>Nom complet : <strong>{{ app.user.civilite }} {{ app.user.Nom }} {{ app.user.Prenoms }}</strong></li>
+                <li class="list-group-item"><i class="bi bi-flag-fill icon-text"></i>Nationalité : <strong>{{ app.user.Nationalite }}</strong></li>
+                <li class="list-group-item"><i class="bi bi-calendar-date icon-text"></i>Date de naissance : <strong>{{ app.user.DateNaissance ? app.user.DateNaissance|date('d/m/Y') : 'Non renseignée' }}</strong></li>
+                <li class="list-group-item"><i class="bi bi-house-door-fill icon-text"></i>Adresse : <strong>{{ app.user.Domicile }}</strong></li>
+                <li class="list-group-item"><i class="bi bi-telephone-fill icon-text"></i>Téléphone : <strong>{{ app.user.NumTel }}</strong></li>
+                <li class="list-group-item"><i class="bi bi-envelope-fill icon-text"></i>Email : <strong>{{ app.user.Email }}</strong></li>
+            </ul>
+        </div>
+
+        <div class="card-body">
+            <h4 class="card-title"><i class="bi bi-card-heading me-2 text-warning"></i>Informations administratives</h4>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><i class="bi bi-person-vcard icon-text"></i>Numéro de pièce : <strong>{{ app.user.PieceId }}</strong></li>
+                <li class="list-group-item"><i class="bi bi-calendar-check icon-text"></i>Délivrée le : <strong>{{ app.user.FaitLe|date('d/m/Y') }}</strong> à <strong>{{ app.user.FaitA }}</strong></li>
+                <li class="list-group-item">
+                    <i class="bi bi-copy icon-text"></i>Pièce dupliquée ? 
+                    <strong>{{ app.user.Dupli ? 'Oui' : 'Non' }}</strong>
+                    {% if app.user.Dupli %}
+                        (le {{ app.user.DateDupli ? app.user.DateDupli|date('d/m/Y') : 'Date inconnue' }} à {{ app.user.LieuDupli ?? 'Lieu inconnu' }})
+                    {% endif %}
+                </li>
+                <li class="list-group-item"><i class="bi bi-image icon-text"></i>Recto : {% if app.user.Recto %}<img src="{{ asset('uploads/cin/' ~ app.user.Recto) }}" alt="Recto CIN" width="300">{% endif %}</li>
+                <li class="list-group-item"><i class="bi bi-image icon-text"></i>Verso : {% if app.user.Verso %}<img src="{{ asset('uploads/cin/' ~ app.user.Verso) }}" alt="Verso CIN" width="300">{% endif %}</li>
+            </ul>
+        </div>
+
+        <div class="card-body">
+            <h4 class="card-title"><i class="bi bi-geo-alt-fill me-2 text-warning"></i>Localisation</h4>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Ville : <strong>{{ app.user.Ville }}</strong></li>
+                <li class="list-group-item">Commune : <strong>{{ app.user.commune }}</strong></li>
+                <li class="list-group-item">District : <strong>{{ app.user.District }}</strong></li>
+                <li class="list-group-item">Région : <strong>{{ app.user.Region }}</strong></li>
+            </ul>
+        </div>
+
+        <div class="card-footer text-end">
+            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                <i class="bi bi-pencil-square me-1"></i>Modifier
+            </button>
+
+            <a href="{{ path('app_deconnexion') }}" class="btn btn-danger">
+                <i class="bi bi-box-arrow-right me-2"></i>Se déconnecter
+            </a>
+        </div>
+    </div>
+</div>
+<!-- Modal de modification -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="editProfileModalLabel">Modifier vos informations</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+
+      <div class="modal-body">
+        
+          {{ form_start(form) }}
+
+          <div class="row">
+            <div class="col-md-6">
+              {{ form_row(form.Ville) }}
+              {{ form_row(form.Commune) }}
+              {{ form_row(form.District) }}
+              {{ form_row(form.Region) }}
+              {{ form_row(form.Domicile) }}
+            </div>
+
+            <div class="col-md-6">
+              {{ form_row(form.NumTel) }}
+              {{ form_row(form.Email) }}
+              {{ form_row(form.Dupli) }}
+              {{ form_row(form.photo) }}
+            </div>
+          </div>
+           <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+            
+      </div>
+
+          {{ form_end(form) }}
+      </div>
+
+      
+
+    </div>
+  </div>
+</div>
+
+
+<!-- JS Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

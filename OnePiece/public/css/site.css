@@ -1,0 +1,117 @@
+/* site.css */
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+/* Couleurs principales */
+
+
+/* Navbar gradient */
+.navbar-gradient {
+  background: linear-gradient(90deg, black, #004aad);
+  color: white;
+}
+.navbar {
+  background-color: #007bff !important; /* un bleu Bootstrap classique */
+}
+
+/* Titres animés */
+h1, h2, h3 {
+  animation: fadeInDown 0.8s ease-in-out;
+}
+.fade {
+  transition: opacity 0.3s ease;
+  opacity: 1;
+}
+
+.fade.hide {
+  opacity: 0;
+  pointer-events: none;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  transition: opacity 0.3s ease, height 0.3s ease, margin 0.3s ease, padding 0.3s ease;
+}
+
+/* Boutons */
+.btn {
+  background-color: #004aad;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1.2rem;
+  transition: transform 0.2s, background-color 0.3s;
+}
+.btn:hover {
+  background-color: #004aad;
+  transform: scale(1.03);
+}
+
+/* Table simple style */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+table th, table td {
+  border: 1px solid #ddd;
+  padding: 0.75rem;
+  text-align: left;
+}
+table th {
+  background-color: #004aad;
+  color: #fff;
+}
+table tr:nth-child(even) {
+  background-color: #f5f5f5;
+}
+
+/* Animation cléframes */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Liens et nav */
+.nav-link {
+  color: white !important;
+  transition: 0.3s;
+}
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+/* Cards, containers */
+.card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1rem;
+}

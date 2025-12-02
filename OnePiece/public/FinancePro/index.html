@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FINANCE PRO</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: #f7f9fc;
+      color: #333;
+    }
+    #userInfo {
+      background: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      margin-top: 1rem;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>Bienvenue sur FINANCE PRO</h1>
+  <div id="userInfo"></div>
+  <button id="logoutBtn" style="display:none;">Déconnexion</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
+  <script>
+    const token = localStorage.getItem('jwtToken');
+    const userInfoDiv = document.getElementById('userInfo');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    if (!token) {
+      userInfoDiv.textContent = "Accès non autorisé. Veuillez vous connecter via le portail SSO.";
+    } else {
+      try {
+        const decoded = jwt_decode(token);
+        const user = decoded.user || {};
+
+        // Vérifier si token expiré
+        const now = Math.floor(Date.now() / 1000);
+        if (decoded.exp && decoded.exp < now) {
+          userInfoDiv.textContent = "Votre session a expiré. Veuillez vous reconnecter.";
+          localStorage.removeItem('jwtToken');
+        } else {
+          userInfoDiv.innerHTML = `
+            <p>Utilisateur connecté : <strong>${user.nom}</strong></p>
+            <p>Email : ${user.email}</p>
+            <p>ID utilisateur : ${user.id}</p>
+          `;
+          logoutBtn.style.display = 'inline-block';
+        }
+      } catch (e) {
+        userInfoDiv.textContent = "Token invalide.";
+      }
+    }
+
+    logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem('jwtToken');
+      window.location.href = '/mes-applications';
+      location.reload();
+    });
+  </script>
+</body>
+</html>

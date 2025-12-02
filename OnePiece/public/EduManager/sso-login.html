@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SSO Login</title>
+</head>
+<body>
+  <script>
+    // Récupérer le token dans l'URL
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token');
+    if (!token) {
+      document.body.innerHTML = "<h2>Accès non autorisé - Token manquant</h2>";
+    } else {
+      // Ici tu peux décoder ton token JWT en JS (avec une lib ou manuellement)
+      // Par exemple, juste le stocker en localStorage et rediriger vers index.html
+      localStorage.setItem('jwtToken', token);
+
+      // Redirection vers la page principale
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>
